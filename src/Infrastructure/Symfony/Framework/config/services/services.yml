@@ -1,0 +1,40 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Session\Application\:
+        resource: '../../../../../Application/*'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    Session\Infrastructure\Symfony\:
+        resource: '../../../*'
+        exclude: '../../../{Framework,Entity,Migrations,Tests}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Session\Infrastructure\Symfony\HttpAction\:
+        resource: '../../../HttpAction'
+        tags: ['controller.service_arguments']
+
+    session.infrastructure.persistence.doctrine.doctrine_user_repository:
+        class: Session\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Session\Domain\Model\Session\User
+
+    session.application.data_transformer.session.user_dto_data_transformer:
+        class: Session\Application\DataTransformer\Session\UserDTODataTransform
+    Session\Application\DataTransformer\Session\UserSymfonyDataTransform:
+        class: Session\Application\DataTransformer\Session\UserSymfonyDataTransform
+
+    Session\Domain\Model\Session\UserRepository: "@session.infrastructure.persistence.doctrine.doctrine_user_repository"

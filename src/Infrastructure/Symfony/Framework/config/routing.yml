@@ -1,0 +1,29 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+#Redirections to CompositeUI
+
+session.http_action.session.verify_access_token:
+    path: /session/user/login
+    defaults:
+        _controller: Session\Infrastructure\Symfony\HttpAction\Session\FacebookLoginAction:__invoke
+    methods:
+        - POST
+
+session.http_action.session.jwt_decode:
+    path: /session/user/decode
+    defaults:
+        _controller: Session\Infrastructure\Symfony\HttpAction\Session\JWTDecodeAction:__invoke
+    methods:
+        - GET
+
+session.http_action.session.get_user:
+    path: /session/user/
+    defaults:
+        _controller: Session\Infrastructure\Symfony\HttpAction\Session\GetUserByIdAction:__invoke
+    methods:
+        - GET

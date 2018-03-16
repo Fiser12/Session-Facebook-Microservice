@@ -1,0 +1,4 @@
+Session\Domain\Model\Session\UserFacebookAccessToken:
+    type: embeddable
+    fields:
+        token: { type: string }

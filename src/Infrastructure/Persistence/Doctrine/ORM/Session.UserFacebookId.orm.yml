@@ -1,0 +1,4 @@
+Session\Domain\Model\Session\UserFacebookId:
+    type: embeddable
+    fields:
+        id: { type: string }

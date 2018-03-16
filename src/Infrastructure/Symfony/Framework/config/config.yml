@@ -1,0 +1,79 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+imports:
+    - { resource: ../../../../../parameters.yml }
+    - { resource: security.yml }
+    - { resource: doctrine.yml }
+    - { resource: services/, type: directory }
+
+parameters:
+    locale: es
+
+framework:
+    translator: { fallbacks: ["%locale%"] }
+    secret: "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    templating:
+        engines: ["twig"]
+    default_locale: "%locale%"
+    trusted_hosts: ~
+    trusted_proxies: ~
+    session:
+        handler_id: session.handler.native_file
+        save_path: "%kernel.root_dir%/../../../../var/sessions/%kernel.environment%"
+    fragments: ~
+    http_method_override: true
+    assets: ~
+
+twig:
+    debug: "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    paths:
+        "%kernel.root_dir%/../../Ui/Templates/Twig": ~
+
+swiftmailer:
+    transport: "%mailer_transport%"
+    host: "%mailer_host%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
+    spool: { type: memory }
+
+accelerator_cache:
+    host: "%router.request_context.scheme%://%router.request_context.host%"
+    web_dir: "%kernel.root_dir%/../../Ui/Http/Symfony"
+
+lin3s_distribution:
+    webpack:
+        manifest_path: "%kernel.root_dir%/../../Ui/manifest.json"
+        public_js_path: "/build/"
+        public_css_path: "/build"
+
+ben_gor_user:
+    user_class:
+        user:
+            class: Session\Domain\Model\Session\User
+            data_transformer: Session\Application\DataTransformer\Session\UserDTODataTransform
+            firewall: user
+            default_roles:
+                - ROLE_CLIENT
+            routes:
+                security:
+                    jwt:
+                        path: /api/client/token
+
+lexik_jwt_authentication:
+    private_key_path: "%kernel.root_dir%/../../../../var/jwt/private.pem"
+    public_key_path: "%kernel.root_dir%/../../../../var/jwt/public.pem"
+    pass_phrase: "%secret-jwt%"
+    token_ttl: 3600
+    user_identity_field: email

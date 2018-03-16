@@ -1,0 +1,12 @@
+imports:
+    - tests/Behat/Resources/profiles.yml
+    - tests/Behat/Resources/suites.yml
+
+default:
+    autoload:
+        '': %paths.base%/tests
+    suites:
+        default:
+            paths:
+                - %paths.base%/tests/Behat/Resources/features
+            contexts: [ Behat\BaseContext ]

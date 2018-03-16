@@ -1,0 +1,7 @@
+suites:
+    default:
+        spec_path: tests/
+        spec_prefix: Spec
+        src_path: src/
+        namespace: Session
+        psr4_prefix: Session

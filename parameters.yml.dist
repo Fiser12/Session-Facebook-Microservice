@@ -1,0 +1,30 @@
+# This file is part of the Php DDD Standard project.
+#
+# Copyright (c) 2017 LIN3S <info@lin3s.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Beñat Espiña <benatespina@gmail.com>
+# @author Gorka Laucirica <gorka.lauzirika@gmail.com>
+
+parameters:
+    database_driver:                    pdo_mysql
+    database_host:                      mysql
+    database_port:                      3306
+    database_name:                      session-db
+    database_user:                      root
+    database_password:                  H5UAc6VILJL0
+    mailer_transport:                   smtp
+    mailer_host:                        127.0.0.1
+    mailer_user:                        mail@gmail.com
+    mailer_password:                    effceqvq
+    secret:                             12344321
+    router.request_context.host:        php-ddd-standard.com
+    router.request_context.scheme:      https
+    router.request_context.base_url:    my/path
+    oauth_facebook_client_id:           77285295929
+    oauth_facebook_client_secret:       8248848284824882848248
+    database_server_version:            5.7
+    mail_delivery_address:              example@mail.com
+    secret-jwt:                         12344321

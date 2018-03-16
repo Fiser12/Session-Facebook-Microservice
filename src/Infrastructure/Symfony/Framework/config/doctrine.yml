@@ -1,0 +1,34 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/../../Persistence/Doctrine/Migrations"
+    namespace: Session\Infrastructure\Persistence\Doctrine\Migrations
+    table_name: session_migration_versions
+    name: Session migrations
+
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: "%database_host%"
+        port: "%database_port%"
+        dbname: "%database_name%"
+        user: "%database_user%"
+        password: "%database_password%"
+        server_version: "%database_server_version%"
+        charset: UTF8
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        mappings:
+          CoreModels:
+            mapping: true
+            type: yml
+            dir: "%kernel.root_dir%/../../Persistence/Doctrine/ORM"
+            alias: 'CoreModels'
+            prefix: 'Session\Domain\Model'
+            is_bundle: false

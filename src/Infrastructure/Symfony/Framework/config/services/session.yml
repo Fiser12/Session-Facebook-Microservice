@@ -1,0 +1,38 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+services:
+    Ajgl\SimpleBus\Message\Bus\Middleware\CatchReturnMessageBusSupportingMiddleware:
+
+    LIN3S\SharedKernel\Infrastructure\Application\SimpleBus\SimpleBusQueryBus:
+        arguments:
+          - '@Ajgl\SimpleBus\Message\Bus\Middleware\CatchReturnMessageBusSupportingMiddleware'
+
+    LIN3S\SharedKernel\Infrastructure\Application\SimpleBus\SimpleBusCommandBus:
+        arguments:
+            - "@command_bus"
+
+    Facebook\Facebook:
+      arguments:
+        - 'app_id': '%oauth_facebook_client_id%'
+          'app_secret': '%oauth_facebook_client_secret%'
+          'default_graph_version': 'v2.12'
+
+    #Command-Handlers
+    Session\Application\Command\Session\FacebookLogInClient:
+        arguments:
+            - "@bengor_user.user.repository"
+            - "@doctrine.orm.entity_manager"
+            - '@Facebook\Facebook'
+        tags:
+            -
+                name: command_handler
+                handles: Session\Application\Command\Session\FacebookLogInClientCommand
+
+    BenGorUser\User\Application\Query\UserOfIdHandler:
+        arguments:
+            - "@session.infrastructure.persistence.doctrine.doctrine_user_repository"

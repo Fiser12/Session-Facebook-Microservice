@@ -1,0 +1,32 @@
+# This file is part of the Social Recipes.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Ruben Garcia <ruben.garcia@opendeusto.es>
+
+security:
+    providers:
+        in_memory:
+            memory: ~
+        bengor_user:
+            id: bengor_user.user.provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            pattern: ^/
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+                entry_point: bengor_user.user.form_login_authenticator
+            provider: bengor_user
+            form_login: ~
+            logout: ~
+            http_basic: ~
+
+    encoders:
+        Session\Domain\Model\Session\User: bcrypt

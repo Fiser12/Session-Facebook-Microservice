@@ -1,0 +1,34 @@
+Session\Domain\Model\Session\User:
+    type: entity
+    table: session_user
+    lifecycleCallbacks: {  }
+    repositoryClass: Session\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
+    embedded:
+        facebookId:
+            columnPrefix: facebook_id_
+            class: Session\Domain\Model\Session\UserFacebookId
+        facebookAccessToken:
+            columnPrefix: facebook_access_token_
+            class: Session\Domain\Model\Session\UserFacebookAccessToken
+        fullName:
+            columnPrefix: full_name_
+            class: Session\Domain\Model\Session\FullName
+        publicId:
+            columnPrefix: public_id_
+            class: Session\Domain\Model\Session\PublicId
+
+    manyToMany:
+      usersFollowed:
+        fetch: EXTRA_LAZY
+        targetEntity: Session\Domain\Model\Session\User
+        inversedBy: usersFollowMe
+        joinTable:
+          name: session_users_followed
+          joinColumns:
+            user_id:
+              onDelete: CASCADE
+              referencedColumnName: id
+          inverseJoinColumns:
+            user_followed_id:
+              onDelete: CASCADE
+              referencedColumnName: id
