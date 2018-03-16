@@ -10,7 +10,7 @@ You get on the server side a long term facebook access token.
 
 The microservice is completely independent and is designed to be deployed via docker. But if you want you can run it by yourself in the following way:
 
-`
+```
 composer install
 
 openssl genrsa -out var/jwt/private.pem -aes256 -passout pass:${JWT_PASSPHRASE} 4096
@@ -20,7 +20,7 @@ openssl rsa -pubout -in var/jwt/private.pem -out /session/var/jwt/public.pem -pa
 php etc/bin/symfony-console doctrine:database:create --if-not-exists
 
 php etc/bin/symfony-console do:mi:mi -v --no-interaction
-`
+```
 
 ## Using DockerFile
 
