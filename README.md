@@ -12,9 +12,13 @@ The microservice is completely independent and is designed to be deployed via do
 
 `
 composer install
+
 openssl genrsa -out var/jwt/private.pem -aes256 -passout pass:${JWT_PASSPHRASE} 4096
-openssl rsa -pubout -in var/jwt/private.pem -out /session/var/jwt/public.pem -passin pass:${JWT_PASSPHRASE} && \
+
+openssl rsa -pubout -in var/jwt/private.pem -out /session/var/jwt/public.pem -passin pass:${JWT_PASSPHRASE}
+
 php etc/bin/symfony-console doctrine:database:create --if-not-exists
+
 php etc/bin/symfony-console do:mi:mi -v --no-interaction
 `
 
@@ -25,7 +29,6 @@ Then create a DockerFile that will be in charge of preparing the environment and
 
 I also recommend that the Dockerfile at the moment of instantiating the image reconstruct the parameters.yml replacing in it all the parameters that we consider modifiable to keep the secret out of the repository. To do this we would save a version in a separate directory of parameters with keywords ready to be replaced and then the Dockerfile would replace them and replace the original parameters.yml.
 
-`
 FROM php:7.1-fpm
 RUN apt-get update \
 	&& apt-get install -y \
@@ -63,7 +66,7 @@ RUN chown -R www-data:www-data /session
 RUN chmod -R 777 /session
 
 RUN composer install -d=/session --no-dev --no-interaction
-a
+
 CMD sed \
         -e "s/\${database_host}/${DB_HOST}/" \
         -e "s/\${database_port}/${DB_PORT}/" \
@@ -86,7 +89,6 @@ CMD sed \
         /session/etc/docker-resources/session-parameters.yml.dist > /session/parameters.yml  && \
         openssl genrsa -out /session/var/jwt/private.pem -aes256 -passout pass:${JWT_PASSPHRASE} 4096 && \
         openssl rsa -pubout -in /session/var/jwt/private.pem -out /session/var/jwt/public.pem -passin pass:${JWT_PASSPHRASE} && \
-
         php /session/etc/bin/symfony-console doctrine:database:create --if-not-exists && \
         php /session/etc/bin/symfony-console do:mi:mi -v --no-interaction --allow-no-migration && \
-        php-fpm -F
+        php-fpm -F
