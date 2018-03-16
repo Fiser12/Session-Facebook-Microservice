@@ -28,7 +28,7 @@ I recommend saving the microservice in a folder called Session and all Docker-re
 Then create a DockerFile that will be in charge of preparing the environment and where the project will be stored inside, isolated from the others. The docker file would have the following instructions to run this microservice.
 
 I also recommend that the Dockerfile at the moment of instantiating the image reconstruct the parameters.yml replacing in it all the parameters that we consider modifiable to keep the secret out of the repository. To do this we would save a version in a separate directory of parameters with keywords ready to be replaced and then the Dockerfile would replace them and replace the original parameters.yml.
-
+```
 FROM php:7.1-fpm
 RUN apt-get update \
 	&& apt-get install -y \
@@ -47,16 +47,13 @@ RUN apt-get update \
 		g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer --version
 
-# Set your timezone here
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
 RUN "date"
 
-# Run docker-php-ext-install for available extensions
 RUN docker-php-ext-configure intl \
     && docker-php-ext-install pdo pdo_mysql opcache intl
 
@@ -92,3 +89,4 @@ CMD sed \
         php /session/etc/bin/symfony-console doctrine:database:create --if-not-exists && \
         php /session/etc/bin/symfony-console do:mi:mi -v --no-interaction --allow-no-migration && \
         php-fpm -F
+```
